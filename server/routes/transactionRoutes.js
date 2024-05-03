@@ -1,4 +1,10 @@
 const mongoose = require('mongoose');
+const express = require('express');
+const router = express.Router();
+const { addTransaction } = require('../controllers/transactionController');
+const auth = require('../middleware/auth');
+
+router.post('/transactions', auth, addTransaction);
 
 // Define the schema for a transaction
 const transactionSchema = new mongoose.Schema({
@@ -27,3 +33,4 @@ const transactionSchema = new mongoose.Schema({
 const Transaction = mongoose.model('Transaction', transactionSchema);
 
 module.exports = Transaction;
+module.exports = router;

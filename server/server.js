@@ -8,18 +8,25 @@ const PORT = process.env.PORT || 4000;
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
+const transactionRoutes = require('./routes/transactionRoutes'); // Assuming you have transaction routes
 
 // Import database configuration
 const connectDB = require('./config/db');
 
 // Connect to MongoDB with the external function for cleaner code
-connectDB();
+connectDB().then(() => {
+    console.log('MongoDB connected successfully');
+}).catch(err => {
+    console.error('MongoDB connection error:', err.message);
+    process.exit(1); // Exit if the database connection fails
+});
 
 // Middleware to parse JSON bodies must be placed before any routes that will handle JSON
 app.use(express.json());
 
 // Use routes
 app.use('/api/auth', authRoutes);
+app.use('/api/transactions', transactionRoutes); // Apply transaction routes
 
 // Setup Apollo Server
 const server = new ApolloServer({ typeDefs, resolvers });
