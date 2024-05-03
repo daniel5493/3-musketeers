@@ -20,11 +20,11 @@ app.use(express.json());
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
-const transactionRoutes = require('./routes/transactionRoutes'); // Assuming you have transaction routes
+const TransactionRoutes = require('./routes/transactionRoutes'); // Assuming you have transaction routes
 
 // Use routes
 app.use('/api/auth', authRoutes);
-app.use('/api/transactions', transactionRoutes); // Apply transaction routes
+app.use('/api/transactions', TransactionRoutes); // Apply transaction routes
 
 // Setup Apollo Server
 const server = new ApolloServer({ typeDefs, resolvers });

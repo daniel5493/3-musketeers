@@ -4,13 +4,15 @@
     "description": "Server for the Personal Budget Tracker application",
     "main": "server.js",
     "scripts": {
-        "start": "node seed.js",
-        "dev": "nodemon server.js"
-    },
+        "start": "node server.js",
+        "seed": "node seeds/seed.js",
+        "watch": "nodemon server.js"
+      },
     "author": "Your Name",
     "license": "ISC",
     "dependencies": {
         "apollo-server-express": "^2.19.0",
+        "bcrypt": "^5.1.1",
         "bcryptjs": "^2.4.3",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
@@ -19,6 +21,6 @@
         "mongoose": "^5.11.15"
     },
     "devDependencies": {
-        "nodemon": "^2.0.7"
+        "nodemon": "^2.0.22"
     }
 }
