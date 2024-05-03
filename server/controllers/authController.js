@@ -1,25 +1,33 @@
 // authController.js
-const User = require('../models/User'); // Assuming you have a User model
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 exports.registerUser = async (req, res) => {
     try {
-        // Logic to handle user registration
-        const user = new User(req.body);
+        const { email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({ email, password: hashedPassword });
         await user.save();
-        res.status(201).send('User registered successfully');
+
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        res.status(201).send({ user, token });
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send(error);
     }
 };
 
 exports.loginUser = async (req, res) => {
     try {
-        // Logic to handle user login
-        const { username, password } = req.body;
-        const user = await User.findByCredentials(username, password);
-        const token = await user.generateAuthToken(); // Assuming token generation logic is implemented
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).send('Login failed!');
+        }
+
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
         res.send({ user, token });
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send(error);
     }
 };
