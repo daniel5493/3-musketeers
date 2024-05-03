@@ -6,22 +6,29 @@ const { typeDefs, resolvers } = require('./graphql/schema');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+// Import routes
+const authRoutes = require('./routes/authRoutes');
+
+// Import database configuration
+const connectDB = require('./config/db');
+
+// Connect to MongoDB with the external function for cleaner code
+connectDB();
+
+// Middleware to parse JSON bodies must be placed before any routes that will handle JSON
+app.use(express.json());
+
+// Use routes
+app.use('/api/auth', authRoutes);
 
 // Setup Apollo Server
 const server = new ApolloServer({ typeDefs, resolvers });
-server.applyMiddleware({ app });
 
+// Apply Apollo GraphQL middleware and set the path to /graphql
+server.applyMiddleware({ app, path: '/graphql' });
+
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`GraphQL ready at http://localhost:${PORT}${server.graphqlPath}`);
 });
-
-const authRoutes = require('./routes/authRoutes');
-app.use(express.json()); // For parsing application/json
-app.use('/api/auth', authRoutes);
-
-const connectDB = require('./config/db');
-connectDB();

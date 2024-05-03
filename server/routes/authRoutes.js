@@ -3,6 +3,13 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
+const { registerUser, loginUser } = require('../controllers/authController');
+
+// Add a new transaction
+router.post('/transaction', addTransaction);
+
+// Get all transactions for a user
+router.get('/transactions', getTransactions);
 
 router.post('/register', async (req, res) => {
     try {
@@ -28,5 +35,6 @@ router.post('/login', async (req, res) => {
         res.status(500).send(error.message);
     }
 });
+
 
 module.exports = router;
