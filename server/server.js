@@ -1,22 +1,20 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const mongoose = require('mongoose');
-const { typeDefs, resolvers } = require('./graphql/schema');
+const { typeDefs } = require('./graphql/schema');
+const { resolvers } = require('./graphql/resolvers');
+const connectDB = require('./config/db'); // Import connectDB function
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Import routes
-const authRoutes = require('./routes/authRoutes');
-
-// Import database configuration
-const connectDB = require('./config/db');
-
-// Connect to MongoDB with the external function for cleaner code
-connectDB();
+// Connect to MongoDB
+connectDB('mongodb://localhost:27017/yourdatabase'); // Pass MongoDB URI to connectDB function
 
 // Middleware to parse JSON bodies must be placed before any routes that will handle JSON
 app.use(express.json());
+
+// Import routes
+const authRoutes = require('./routes/authRoutes');
 
 // Use routes
 app.use('/api/auth', authRoutes);

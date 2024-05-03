@@ -1,9 +1,18 @@
-// server/routes/authRoutes.js
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 const { registerUser, loginUser } = require('../controllers/authController');
+
+// Define addTransaction function
+const addTransaction = (req, res) => {
+    // Add your transaction handling logic here
+};
+
+// Define getTransactions function
+const getTransactions = (req, res) => {
+    // Add your logic to retrieve transactions here
+};
 
 // Add a new transaction
 router.post('/transaction', addTransaction);
@@ -35,6 +44,5 @@ router.post('/login', async (req, res) => {
         res.status(500).send(error.message);
     }
 });
-
 
 module.exports = router;
