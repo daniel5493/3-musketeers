@@ -4,7 +4,7 @@
     "description": "Server for the Personal Budget Tracker application",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js",
+        "start": "node seed.js",
         "dev": "nodemon server.js"
     },
     "author": "Your Name",
