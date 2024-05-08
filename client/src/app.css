@@ -1729,3 +1729,10 @@ label form [type='radio'] {
     align-content: center;
   }
 }
+.example-class {
+    background-image: url('./components/OIG2.XD5feVvcz2ae.jpeg');
+    background-size: cover; /* or contain, etc. */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+

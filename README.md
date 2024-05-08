@@ -26,8 +26,7 @@
 
 ### Developers
 - [Nelson Perez](https://github.com/daniel5493)
-- [Mathew Garza](https://github.com/mgarza0802)
-- [Bryce Wheeler](https://github.com/BryceGitHuba)
+
 
 ### Server Side APIs:
 - 

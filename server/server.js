@@ -37,3 +37,7 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`GraphQL ready at http://localhost:${PORT}${server.graphqlPath}`);
 });
+
+<div class="example-class">
+    <p>image??</p>
+</div>
