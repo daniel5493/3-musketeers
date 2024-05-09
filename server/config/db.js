@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
-        mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/techmatchup');
+        mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/budgettracker');
         console.log('MongoDB connected...');
     } catch (err) {
         console.error('Failed to connect to MongoDB', err.message);

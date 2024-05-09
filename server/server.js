@@ -1,7 +1,7 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const { typeDefs } = require('./graphql/schema');
-const { resolvers } = require('./graphql/resolvers');
+const { typeDefs } = require('./schemas/typeDefs');
+const { resolvers } = require('./schemas/resolvers');
 const connectDB = require('./config/db'); // Import connectDB function
 const path =require("path")
 const app = express();
@@ -36,7 +36,7 @@ server.applyMiddleware({ app, path: '/graphql' });
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
-    app.get('*', (req, res) => {
+    app.get('/', (req, res) => {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   } 
@@ -44,6 +44,6 @@ server.applyMiddleware({ app, path: '/graphql' });
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`GraphQL ready at http://localhost:${PORT}${server.graphqlPath}`);
+  console.log(`GraphQL ready at http://localhost:${PORT}/graphql`);
 });
 
