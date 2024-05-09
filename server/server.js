@@ -32,12 +32,18 @@ const server = new ApolloServer({ typeDefs, resolvers });
 // Apply Apollo GraphQL middleware and set the path to /graphql
 server.applyMiddleware({ app, path: '/graphql' });
 
+  // if we're in production, serve client/dist as static assets
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    });
+  } 
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`GraphQL ready at http://localhost:${PORT}${server.graphqlPath}`);
 });
 
-<div class="example-class">
-    <p>image??</p>
-</div>
