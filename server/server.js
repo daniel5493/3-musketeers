@@ -3,7 +3,7 @@ const { ApolloServer } = require('apollo-server-express');
 const { typeDefs } = require('./graphql/schema');
 const { resolvers } = require('./graphql/resolvers');
 const connectDB = require('./config/db'); // Import connectDB function
-
+const path =require("path")
 const app = express();
 const PORT = process.env.PORT || 4000;
 
