@@ -4,16 +4,29 @@ import React from 'react';
 // import { QUERY_MATCHUPS } from '../utils/queries';
 
 const AddFunds = () => {
+    let funds = parseInt(localStorage.getItem("funds")) || 0
+    if (funds === 0) {
+        localStorage.setItem("funds", funds)
+    }
+    let addFundBut = document.querySelector("#addFundsButton");
+    function addFunds() {
+        funds += parseInt(document.querySelector("#addAmount").value)
+        localStorage.setItem("funds", funds)
+        document.location.reload()
+    }
 
 
-  return (
-    <div >
-        <input label="Amount:" type="text" />
-      <button id="addFundsButton"> 
-        Add Funds
-      </button>
-    </div>
-  );
+    return (
+        <div >
+            <div>
+                <input label="Amount:" type="text" id="addAmount" />
+                <button id="addFundsButton" onClick={addFunds}>
+                    Add Funds
+                </button>
+            </div>
+
+        </div>
+    );
 };
 
 export default AddFunds;

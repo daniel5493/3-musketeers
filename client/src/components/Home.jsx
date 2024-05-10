@@ -2,6 +2,8 @@
 import AddFunds from './AddFunds'
 import SubtractFunds from './SubtractFunds'
 import TotalFunds from './TotalFunds'
+// import Login from './Login'
+// import Signup from './Signup'
 // import { useQuery } from '@apollo/client';
 // import { QUERY_MATCHUPS } from '../utils/queries';
 
@@ -14,6 +16,7 @@ const Home = () => {
       <div className="card-header bg-dark text-center">
         <h1>Welcome to Piggy Bank Pro!</h1>
       </div>
+
       <div className="card-body m-5">
         <TotalFunds/>
       </div>
