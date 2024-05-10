@@ -30,8 +30,8 @@ type User {
   }
 
   type Mutation {
-    addUser(username: String!, email: String!, password: String!): Auth
-    login(email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): User
+    login(email: String!, password: String!): User
     addTransaction(userId: ID!, description: String!, amount: Float!, date: String!): Transaction
     updateTransaction(id: ID!, description: String, amount: Float, date: String): Transaction
     deleteTransaction(id: ID!): Transaction
