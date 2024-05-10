@@ -7,7 +7,8 @@ const AddFunds = () => {
 
   return (
     <div >
-        <form action="submit">
+        <form onSubmit={handleSubmit}>
+
         <input label="Amount:" type="text" />
       <button> 
         Add Funds
