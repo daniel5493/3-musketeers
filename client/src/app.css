@@ -31,6 +31,16 @@ body, div {
     justify-content: center;
   }
 
+  Header {
+    margin-bottom: auto;
+  }
+  Home {
+    margin: auto;
+  }
+  Footer {
+    padding-top: 20%;
+  }
+
 /**
  * Render the `main` element consistently in IE.
  */

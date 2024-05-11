@@ -1,6 +1,6 @@
 import decode from 'jwt-decode';
 
-export class AuthService {
+ class AuthService {
   getProfile() {
     return decode(this.getToken());
   }
@@ -37,3 +37,4 @@ export class AuthService {
     window.location.reload();
   }
 }
+export default AuthService
