@@ -1,6 +1,5 @@
-const Transaction = require('../models/Transaction');
-const User = require('../models/User');
-
+const {User, Transaction} = require("../models")
+const { signToken, AuthenticationError } = require('../utils/auth');
 const resolvers = {
   Query: {
     users: async () => {
@@ -21,13 +20,25 @@ const resolvers = {
       // First we create the user
       const user = await User.create({ username, email, password });
       // To reduce friction for the user, we immediately sign a JSON Web Token and log the user in after they are created
-      // const token = signToken(user);
+       const token = signToken(user);
       // Return an `Auth` object that consists of the signed token and user's information
-      return { user };
+      return { token, user };
     },
     login: async (parent, { email, password }) => {
       // Look up the user by the provided email address. Since the `email` field is unique, we know that only one person will exist with that email
       const user = await User.findOne({ email });
+
+      if (!user) {
+        throw AuthenticationError;
+      }
+
+      const correctPw = await user.isCorrectPassword(password);
+
+      if (!correctPw) {
+        throw AuthenticationError;
+      }
+
+      const token = signToken(user);
 
       // Return an `Auth` object that consists of the signed token and user's information
       return { user };

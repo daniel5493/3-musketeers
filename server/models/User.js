@@ -3,18 +3,37 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    username: { 
+        type: String, 
+        unique: true 
+    },
+    email: { 
+        type: String, 
+        unique: true 
+    },
+    password: { 
+        type: String, 
+    },
+    transactions: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Transaction',
+        },
+      ],
 });
 
-userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 8);
+userSchema.pre('save', async function (next) {
+    if (this.isNew || this.isModified('password')) {
+      const saltRounds = 10;
+      this.password = await bcrypt.hash(this.password, saltRounds);
+    }
+  
     next();
-});
-
-userSchema.methods.comparePassword = async function(password) {
+  });
+  
+  userSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);
-};
+  };
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = User

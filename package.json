@@ -13,7 +13,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@apollo/client": "^3.10.3",
+        "@apollo/server": "^4.7.1",
         "concurrently": "^8.2.2",
         "react-router-dom": "^6.23.0"
     }

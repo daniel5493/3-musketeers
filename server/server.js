@@ -1,49 +1,47 @@
 const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
-const { typeDefs } = require('./schemas/typeDefs');
-const { resolvers } = require('./schemas/resolvers');
-const connectDB = require('./config/db'); // Import connectDB function
+const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
 const path =require("path")
-const app = express();
-const PORT = process.env.PORT || 4000;
+const { authMiddleware } = require('./utils/auth');
 
-// Connect to MongoDB with the external function for cleaner code
-connectDB().then(() => {
-    console.log('MongoDB connected successfully');
-}).catch(err => {
-    console.error('MongoDB connection error:', err.message);
-    process.exit(1); // Exit if the database connection fails
+const { typeDefs, resolvers } = require('./schemas');
+const db = require('./config/connection'); // Import connectDB function
+
+const PORT = process.env.PORT || 4000;
+const app = express();
+
+app.use(express.json());
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
 });
 
-// Middleware to parse JSON bodies must be placed before any routes that will handle JSON
-app.use(express.json());
+const startApolloServer = async () => {
+  await server.start();
 
-// Import routes
-const authRoutes = require('./routes/authRoutes');
-const TransactionRoutes = require('./routes/transactionRoutes'); // Assuming you have transaction routes
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
 
-// Use routes
-app.use('/api/auth', authRoutes);
-app.use('/api/transactions', TransactionRoutes); // Apply transaction routes
-
-// Setup Apollo Server
-const server = new ApolloServer({ typeDefs, resolvers });
-
-// Apply Apollo GraphQL middleware and set the path to /graphql
-server.applyMiddleware({ app, path: '/graphql' });
+  app.use('/graphql', expressMiddleware(server, {
+    context: authMiddleware
+  }));
 
   // if we're in production, serve client/dist as static assets
   if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+    
+    app.get('/', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    });
   } 
-  app.use(express.static(path.join(__dirname, '../client/dist')));
 
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  db.once('open', () => {
+    app.listen(PORT, () => {
+      console.log(`API server running on port ${PORT}!`);
+      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    });
   });
+};
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`GraphQL ready at http://localhost:${PORT}/graphql`);
-});
-
+// Call the async function to start the server
+  startApolloServer();

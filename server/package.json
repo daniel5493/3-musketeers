@@ -5,13 +5,13 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "seed": "node seeds/seed.js",
+        "seed": "node seeders/seed.js",
         "watch": "nodemon server.js"
     },
     "author": "Your Name",
     "license": "ISC",
     "dependencies": {
-        "@apollo/client": "^3.10.3",
+        "@apollo/server": "^4.7.1",
         "apollo-server-express": "^2.19.0",
         "bcrypt": "^5.1.1",
         "bcryptjs": "^2.4.3",
