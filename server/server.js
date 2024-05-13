@@ -26,9 +26,6 @@ const startApolloServer = async () => {
     context: authMiddleware
   }));
 
-  // if we're in production, serve client/dist as static assets
-  if (process.env.NODE_ENV === 'production') {
-  } 
   app.use(express.static(path.join(__dirname, '../client/dist')));
   
   app.get('/', (req, res) => {
